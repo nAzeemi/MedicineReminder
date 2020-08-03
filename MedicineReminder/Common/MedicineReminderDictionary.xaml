@@ -1,0 +1,126 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MedicineReminder"
+    xmlns:common="using:MedicineReminder.Common">
+
+
+    <!--
+    Converters
+    -->
+    <common:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+    <common:ShortTimeConverter x:Key="ShortTimeConverter"/>
+    <common:LongDateConverter x:Key="LongDateConverter"/>
+    <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <common:ShortDateTimeConverter x:Key="ShortDateTimeConverter"/>
+    <common:IntervalToIndexConverter x:Key="IntervalToIndexConverter"/>
+    <common:IntervalToTextConverter x:Key="IntervalToTextConverter"/>
+
+
+    <DataTemplate x:Key="ReminderItemTemplate">
+        <StackPanel Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="300">
+            <TextBlock x:Name="Next" TextWrapping="Wrap" Text="{Binding Next, Converter={StaticResource ShortDateTimeConverter}}" VerticalAlignment="Top" Style="{StaticResource SubheaderTextStyle}" Margin="15,0,15,10" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding Medicine}" Foreground="{StaticResource MedicineBrush}" Style="{StaticResource SubtitleTextStyle}" Margin="15,0,15,0" TextWrapping="NoWrap"/>
+            <TextBlock Text="{Binding Patient}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource ItemTextStyle}" Margin="15,0,15,10" TextWrapping="NoWrap"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SnappedReminderItemTemplate">
+        <StackPanel Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="300">
+            <TextBlock x:Name="Next" TextWrapping="Wrap" Text="{Binding Next, Converter={StaticResource ShortDateTimeConverter}}" VerticalAlignment="Top" Style="{StaticResource SubheaderTextStyle}" Margin="15,0,15,10" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding Medicine}" Foreground="{StaticResource MedicineBrush}" Style="{StaticResource SubtitleTextStyle}" Margin="15,0,15,0" TextWrapping="NoWrap"/>
+            <TextBlock Text="{Binding Patient}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource ItemTextStyle}" Margin="15,0,15,10" TextWrapping="NoWrap"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <Style x:Key="LayoutPanelStyle" TargetType="Panel">
+        <Setter Property="Margin" Value="124,20,0,0"/>
+    </Style>
+
+    <Style x:Key="SnappedLayoutPanelStyle" TargetType="Panel">
+        <Setter Property="Margin" Value="20,20,0,0"/>
+    </Style>
+
+    <DataTemplate x:Key="ReminderFullTemplate">
+        <Grid HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="Auto">
+                <TextBlock x:Name="Next" TextWrapping="Wrap" Text="{Binding Next, Converter={StaticResource ShortDateTimeConverter}}" VerticalAlignment="Top" Style="{StaticResource HeaderTextStyle}" Margin="15" HorizontalAlignment="Left"/>
+            </Border>
+            <StackPanel Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}"  Grid.Row="1">
+                <TextBlock x:Name="Medicine" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Medicine}" VerticalAlignment="Top" Style="{StaticResource SubheaderTextStyle}" Foreground="{StaticResource MedicineBrush}" Margin="15,0"/>
+                <TextBlock x:Name="Patient" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Patient}" VerticalAlignment="Top" Style="{StaticResource SubheaderTextStyle}" Margin="15,0" />
+                <TextBlock x:Name="Interval" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Interval, Converter={StaticResource IntervalToTextConverter}}" VerticalAlignment="Top" Style="{StaticResource BodyTextStyle}" Margin="15,0" />
+                <TextBlock x:Name="Note" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Note}" VerticalAlignment="Top" Style="{StaticResource BodyTextStyle}" Margin="15,0,15,10" Visibility="{Binding Text, Converter={StaticResource TextToVisibilityConverter}, ElementName=Notes}" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ReminderEditTemplate">
+        <StackPanel Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"  Width="280">
+            <TextBlock Text="Medicine" x:Uid="/Resources/Medicine" Style="{StaticResource BodyTextStyle}" Margin="15,10,15,5" />
+            <TextBox x:Name="Medicine" TextWrapping="Wrap" Text="{Binding Medicine, Mode=TwoWay}" Margin="15,0,15,10"/>
+            <TextBlock Text="Patient" x:Uid="/Resources/Patient" Style="{StaticResource BodyTextStyle}" Margin="15,0,15,5" />
+            <TextBox x:Name="Patient" TextWrapping="Wrap" Text="{Binding Patient, Mode=TwoWay}" Margin="15,0,15,10"/>
+            <TextBlock Text="Interval" x:Uid="/Resources/Interval" Style="{StaticResource BodyTextStyle}" Margin="15,0,15,5" />
+            <ComboBox Margin="15,0,15,10" SelectedIndex="{Binding Interval, Mode=TwoWay, Converter={StaticResource IntervalToIndexConverter}}">
+                <ComboBoxItem Content="Once a day" x:Uid="/Resources/OnceADay"/>
+                <ComboBoxItem Content="Twice a day" x:Uid="/Resources/TwiceADay"/>
+                <ComboBoxItem Content="Every 8 hours" x:Uid="/Resources/Every8Hours"/>
+                <ComboBoxItem Content="Every 6 hours" x:Uid="/Resources/Every6Hours"/>
+                <ComboBoxItem Content="Every 4 hours" x:Uid="/Resources/Every4Hours"/>
+                <ComboBoxItem Content="Every 3 hours" x:Uid="/Resources/Every3Hours"/>
+                <ComboBoxItem Content="Every 2 hours" x:Uid="/Resources/Every2Hours"/>
+                <ComboBoxItem Content="Every hour" x:Uid="/Resources/EveryHour"/>
+            </ComboBox>
+            <TextBlock Text="Next" x:Uid="/Resources/Next" Style="{StaticResource BodyTextStyle}" Margin="15,0,15,5" />
+            <local:TimePicker x:Name="Next" Value="{Binding Next,Mode=TwoWay}" Margin="15,0,15,15"/>
+            <TextBlock Text="Note" x:Uid="/Resources/Note" Style="{StaticResource BodyTextStyle}" Margin="15,0,15,5" />
+            <TextBox x:Name="Note" TextWrapping="Wrap" Text="{Binding Note, Mode=TwoWay}" Margin="15,0,15,25"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SnappedReminderFullTemplate">
+        <Grid HorizontalAlignment="Left" Width="280">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="Auto">
+                <TextBlock x:Name="Next" TextWrapping="Wrap" Text="{Binding Next, Converter={StaticResource ShortDateTimeConverter}}" VerticalAlignment="Top" Style="{StaticResource SnappedReminderTimeTextStyle}" Margin="15" HorizontalAlignment="Left"/>
+            </Border>
+            <StackPanel Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}"  Grid.Row="1">
+                <TextBlock x:Name="Medicine" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Medicine}" VerticalAlignment="Top" Style="{StaticResource SubtitleTextStyle}" Foreground="{StaticResource MedicineBrush}" Margin="15,0"/>
+                <TextBlock x:Name="Patient" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Patient}" VerticalAlignment="Top" Style="{StaticResource SubtitleTextStyle}" Margin="15,0" />
+                <TextBlock x:Name="Interval" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Interval, Converter={StaticResource IntervalToTextConverter}}" VerticalAlignment="Top" Style="{StaticResource BodyTextStyle}" Margin="15,0" />
+                <TextBlock x:Name="Note" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Note}" VerticalAlignment="Top" Style="{StaticResource BodyTextStyle}" Margin="15,0,15,10" Visibility="{Binding Text, Converter={StaticResource TextToVisibilityConverter}, ElementName=Notes}" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PatientItemTemplate">
+        <StackPanel Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="300">
+            <TextBlock x:Name="Name" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Style="{StaticResource SubheaderTextStyle}" Margin="15,0,15,10" HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="{Binding Overdue}" Foreground="{StaticResource MedicineBrush}" Style="{StaticResource SubheaderTextStyle}" Margin="15,0,5,0" TextWrapping="NoWrap" />
+                <TextBlock Text="/" Style="{StaticResource SubheaderTextStyle}" TextWrapping="NoWrap" />
+                <TextBlock Text="{Binding Total}" Style="{StaticResource SubheaderTextStyle}" Margin="5,0,15,15" TextWrapping="NoWrap" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+
+    <Style x:Key="HeaderGridStyle" TargetType="Grid">
+    </Style>
+
+    <DataTemplate x:Key="SnappedDueTimeItemTemplate">
+        <StackPanel Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="300">
+            <TextBlock Text="{Binding Group.Title}" Style="{StaticResource SubheaderTextStyle}" Margin="15,0,15,10" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding Group.Total}" Style="{StaticResource SubheaderTextStyle}" Margin="15,0,15,15" TextWrapping="NoWrap" HorizontalAlignment="Right"/>
+        </StackPanel>
+    </DataTemplate>
+    
+</ResourceDictionary>
